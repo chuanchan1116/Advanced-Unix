@@ -2,6 +2,7 @@
 #define __LIBMINIC_H__
 
 #define _SIGSET_NWORDS (1024 / (8 * sizeof (unsigned long int)))
+#define NULL 0
 
 #define SIGHUP 1
 #define SIGINT 2

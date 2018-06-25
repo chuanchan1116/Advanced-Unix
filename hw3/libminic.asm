@@ -54,7 +54,7 @@ sigaction:
 	global sigprocmask:function
 sigprocmask:
 	push	rcx
-	mov		rcx, 4
+	mov		rcx, 8
 	call	sys_rt_sigprocmask
 	pop		rcx
 	ret
@@ -71,9 +71,9 @@ setjmp:
 	mov		[rdi+48], r15
 	mov		[rdi+56], rdx
 	push	rdx
+	lea		rdx, [rdi+64]		;old_set
 	mov		rsi, 0			;set
-	mov		rdx, [rdi+64]	;oldset
-	mov		rdi, 0			;how
+	mov		rdi, 2			;how
 	call	sigprocmask
 	xor		rax, rax
 	pop		rdx
@@ -92,9 +92,9 @@ longjmp:
 	mov		rdx, [rdi+56]
 	push	rdx
 	push	rax
-	mov		rsi, [rdi+64]	;set
-	mov		rdx, 0			;oldset
-	mov		rdi, 2			;SIG_SETMASK
+	mov		rdx, 0			;old_set
+	lea		rsi, [rdi+64]		;set
+	mov		rdi, 2			;how
 	call	sigprocmask
 	pop		rax
 	pop		rdx
